@@ -10,13 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_13_130053) do
+ActiveRecord::Schema.define(version: 2022_07_14_121636) do
 
   create_table "ceos", force: :cascade do |t|
     t.string "name"
     t.string "company_name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "clients", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "clients_managers", id: false, force: :cascade do |t|
+    t.integer "client_id", null: false
+    t.integer "manager_id", null: false
   end
 
   create_table "employees", force: :cascade do |t|
@@ -54,8 +65,32 @@ ActiveRecord::Schema.define(version: 2022_07_13_130053) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "rooms", force: :cascade do |t|
+    t.string "time"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "student_id", null: false
+    t.integer "teacher_id", null: false
+    t.index ["student_id"], name: "index_rooms_on_student_id"
+    t.index ["teacher_id"], name: "index_rooms_on_teacher_id"
+  end
+
+  create_table "students", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "teachers", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   add_foreign_key "employees", "managers"
   add_foreign_key "managers", "projects"
   add_foreign_key "mettings", "employees"
   add_foreign_key "mettings", "projects"
+  add_foreign_key "rooms", "students"
+  add_foreign_key "rooms", "teachers"
 end
